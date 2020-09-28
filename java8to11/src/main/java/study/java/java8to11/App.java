@@ -5,26 +5,25 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class App {
 
     public static void main(String[] args) {
 
-        List<String> name = new ArrayList<>();
-        name.add("keesun");
-        name.add("youngchul");
-        name.add("toby");
-        name.add("foo");
+        List<String> names = new ArrayList<>();
+        names.add("keesun");
+        names.add("youngchul");
+        names.add("toby");
+        names.add("foo");
 
-        // foreach
-        //name.forEach(System.out::println);
+        for (String name : names) {
+            System.out.println(name.toUpperCase());
+        }
 
-        // splitter
-        Spliterator<String> spliterator = name.spliterator();
-        spliterator.tryAdvance(System.out::println);
+        names.parallelStream().map(String::toUpperCase).collect(Collectors.toList());
 
-        // comparator
-        Comparator<String> compareToIgnoreCase = String::compareToIgnoreCase;
-        name.sort(compareToIgnoreCase.reversed());
+        names.stream().map(String::toUpperCase).collect(Collectors.toList());
     }
 }
