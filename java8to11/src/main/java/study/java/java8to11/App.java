@@ -5,20 +5,32 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        executorService.execute(() -> {
+//            System.out.println("Thread " + Thread.currentThread().getName());
+//        });
 
-        LocalDate parse = LocalDate.parse("09/06/1984", formatter);
-        System.out.println(parse);
+        Future<?> submit = executorService.submit(() -> {
+            System.out.println("Thread " + Thread.currentThread().getName());
+        });
 
-        Instant instant = Instant.now();
+        Callable<String> callable1 = () -> {
+            return "test";
+        };
 
+        Future<String> submit1 = executorService.submit(callable1);
+        System.out.println(submit1);
+
+
+        executorService.shutdown();
     }
 }
